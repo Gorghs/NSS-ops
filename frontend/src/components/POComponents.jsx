@@ -14,7 +14,7 @@ import {
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export const POLayout = () => {
-    const { disasterMode, refreshData } = useGlobal();
+    const { disasterMode, refreshData, logout } = useGlobal();
     const [activeTab, setActiveTab] = useState('dashboard');
 
     const toggleDisaster = async () => {
@@ -98,6 +98,9 @@ export const POLayout = () => {
                         <div className="w-10 h-10 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold border-2 border-white shadow-sm ring-2 ring-slate-100">
                             PO
                         </div>
+                        <button onClick={logout} className="text-sm font-bold text-red-600 hover:bg-red-50 px-4 py-2 rounded-xl border border-red-200 transition-colors bg-white">
+                            Logout
+                        </button>
                     </div>
                 </header>
 

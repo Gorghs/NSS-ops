@@ -4,14 +4,29 @@ import { api } from '../api';
 const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
-    const [role, setRole] = useState(null); // 'volunteer' | 'po' | null
-    const [volunteerData, setVolunteerData] = useState(null); // If role is volunteer
+    // Initialize from localStorage if available
+    const [role, setRole] = useState(() => localStorage.getItem('role') || null);
+    const [volunteerData, setVolunteerData] = useState(() => {
+        const saved = localStorage.getItem('volunteerData');
+        return saved ? JSON.parse(saved) : null;
+    });
     const [disasterMode, setDisasterMode] = useState(false);
 
     // Shared Data Cache
     const [activities, setActivities] = useState([]);
     const [volunteers, setVolunteers] = useState([]);
     const [stats, setStats] = useState(null);
+
+    // Persist changes
+    useEffect(() => {
+        if (role) localStorage.setItem('role', role);
+        else localStorage.removeItem('role');
+    }, [role]);
+
+    useEffect(() => {
+        if (volunteerData) localStorage.setItem('volunteerData', JSON.stringify(volunteerData));
+        else localStorage.removeItem('volunteerData');
+    }, [volunteerData]);
 
     const refreshData = async () => {
         const [acts, vols, st, status] = await Promise.all([
@@ -24,6 +39,13 @@ export const GlobalProvider = ({ children }) => {
         setVolunteers(vols);
         setStats(st);
         setDisasterMode(status.disaster_mode);
+    };
+
+    const logout = () => {
+        setRole(null);
+        setVolunteerData(null);
+        localStorage.removeItem('role');
+        localStorage.removeItem('volunteerData');
     };
 
     useEffect(() => {
@@ -40,7 +62,8 @@ export const GlobalProvider = ({ children }) => {
             volunteerData, setVolunteerData,
             disasterMode,
             activities, volunteers, stats,
-            refreshData
+            refreshData,
+            logout
         }}>
             {children}
         </GlobalContext.Provider>

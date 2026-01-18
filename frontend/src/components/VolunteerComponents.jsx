@@ -5,7 +5,7 @@ import { MapPin, CheckCircle, Upload, AlertCircle, Clock, Award, Briefcase, User
 
 export const VolunteerLayout = () => {
     const { volunteerData } = useGlobal();
-    
+
     // Simple improved routing
     if (!volunteerData) return <ProfileForm />;
 
@@ -13,7 +13,7 @@ export const VolunteerLayout = () => {
         <div className="min-h-screen bg-slate-50 pb-20">
             <Navbar />
             <div className="max-w-3xl mx-auto px-4 pt-6">
-               <VolunteerDashboard /> 
+                <VolunteerDashboard />
             </div>
         </div>
     );
@@ -23,15 +23,20 @@ const Navbar = () => {
     const { volunteerData } = useGlobal();
     return (
         <nav className="bg-white border-b border-slate-100 sticky top-0 z-30 px-4 py-3 shadow-sm flex justify-between items-center">
-             <div className="flex items-center gap-2 font-bold text-slate-800 text-lg">
+            <div className="flex items-center gap-2 font-bold text-slate-800 text-lg">
                 <div className="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white">
                     <User size={18} />
                 </div>
                 <span>NSS Volunteer</span>
-             </div>
-             <div className="text-sm font-medium text-slate-500">
-                {volunteerData?.name}
-             </div>
+            </div>
+            <div className="flex items-center gap-4">
+                <div className="text-sm font-medium text-slate-500">
+                    {volunteerData?.name}
+                </div>
+                <button onClick={() => window.location.reload()} className="text-xs font-bold text-red-500 hover:bg-red-50 px-3 py-1.5 rounded-lg border border-red-100 transition-colors">
+                    Logout
+                </button>
+            </div>
         </nav>
     );
 }
@@ -86,9 +91,9 @@ const ProfileForm = () => {
                                 <button type="button" key={skill}
                                     onClick={() => toggleSkill(skill)}
                                     className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all border
-                                    ${form.skills.includes(skill) 
-                                        ? 'bg-brand-50 border-brand-200 text-brand-700 ring-2 ring-brand-500/20' 
-                                        : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300'}`}
+                                    ${form.skills.includes(skill)
+                                            ? 'bg-brand-50 border-brand-200 text-brand-700 ring-2 ring-brand-500/20'
+                                            : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300'}`}
                                 >
                                     {skill.replace('_', ' ')}
                                 </button>
@@ -109,14 +114,14 @@ const VolunteerDashboard = () => {
 
     // Filter activities assigned to me
     const myActivities = activities.filter(a => a.assigned_volunteers.includes(volunteerData.id));
-    
+
     // Quick Stats
     const totalHours = myActivities.reduce((acc, curr) => acc + (curr.status === 'VERIFIED' ? curr.estimated_hours : 0), 0);
     const completedTasks = myActivities.filter(a => a.status === 'VERIFIED').length;
 
     return (
         <div className="space-y-8 animate-slide-up">
-            
+
             {/* Stats Header */}
             <div className="grid grid-cols-2 gap-4">
                 <div className="bg-gradient-to-br from-brand-500 to-brand-700 rounded-2xl p-5 text-white shadow-lg shadow-brand-500/20">
@@ -202,7 +207,7 @@ const ActivityCard = ({ activity, onSuccess }) => {
             </div>
 
             <h3 className="text-lg font-bold text-slate-900 mb-2">{activity.title}</h3>
-            
+
             <div className="flex flex-col gap-2 text-sm text-slate-500 mb-6">
                 <div className="flex items-center gap-2">
                     <MapPin size={16} className="text-slate-400" />
@@ -226,7 +231,7 @@ const ActivityCard = ({ activity, onSuccess }) => {
                         </label>
                         {error && (
                             <div className="mt-3 p-3 bg-red-50 text-red-600 text-sm rounded-lg flex items-start gap-2 animate-fade-in">
-                                <AlertCircle size={16} className="mt-0.5 flex-shrink-0" /> 
+                                <AlertCircle size={16} className="mt-0.5 flex-shrink-0" />
                                 <span className="font-medium">{error}</span>
                             </div>
                         )}
