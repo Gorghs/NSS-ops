@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useGlobal } from '../context/GlobalContext';
 import {
     Users, ShieldCheck, ArrowRight, Activity, Heart,
@@ -7,6 +8,11 @@ import {
 
 export default function RoleSelection() {
     const { setRole } = useGlobal();
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Parse query param to determine view state? Or just use local state for this UI flow?
+    // Using local state for the login form toggle vs selection is fine, but successful login should Navigate.
     const [view, setView] = useState('selection'); // 'selection' | 'login-po' | 'login-volunteer'
     const [isLoading, setIsLoading] = useState(false);
 
@@ -14,7 +20,9 @@ export default function RoleSelection() {
         setIsLoading(true);
         // Simulate network delay for realism
         setTimeout(() => {
-            setRole(role);
+            setRole(role); // This updates global state, App.jsx redirects automatically
+            // But we can also explicit navigate:
+            // navigate(role === 'volunteer' ? '/volunteer' : '/po'); // Redundant due to App.jsx logic but safe
         }, 800);
     };
 
