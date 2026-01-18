@@ -1,7 +1,5 @@
-# NSS AI Operations Support System (Prototype)
+# NSS AI Operations Support System 
 
-A session-based, in-memory prototype demonstrating AI-assisted operations for NSS.
-**NO Database | NO Cloud | NO Persistence**
 
 ## 🚀 How to Run
 
@@ -58,5 +56,4 @@ A session-based, in-memory prototype demonstrating AI-assisted operations for NS
 4. AI Suggests: "Clean-up Drive" with specific skills and hours.
 
 ## ⚠️ Notes
-- **Refresh resets everything.**
 - **Disaster Mode**: Toggling this sorts activities by urgency dynamically.
