@@ -1,0 +1,6 @@
+flask
+flask-cors
+numpy
+scikit-learn
+opencv-python
+google-generativeai
