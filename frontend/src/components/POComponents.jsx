@@ -31,11 +31,11 @@ export const POLayout = () => {
 
     return (
         <div className={`min-h-screen flex flex-col md:flex-row ${disasterMode ? 'bg-red-50' : 'bg-slate-50'}`}>
-            
+
             {/* Sidebar Navigation */}
             <aside className={`w-full md:w-72 flex-shrink-0 z-20 transition-colors duration-300
                 ${disasterMode ? 'bg-red-900 text-red-50' : 'bg-slate-900 text-slate-300'}`}>
-                
+
                 <div className="p-6">
                     <div className="flex items-center gap-3 mb-8">
                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-xl
@@ -44,7 +44,7 @@ export const POLayout = () => {
                         </div>
                         <div>
                             <h1 className="font-bold text-white tracking-tight leading-none">NSS OPS</h1>
-                            <p className="text-xs opacity-60 font-mono mt-1">v2.0 PROTOTYPE</p>
+                            <p className="text-xs opacity-60 font-mono mt-1">v2.0</p>
                         </div>
                     </div>
 
@@ -57,8 +57,8 @@ export const POLayout = () => {
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
                                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group
-                                        ${isActive 
-                                            ? (disasterMode ? 'bg-red-800 text-white shadow-lg' : 'bg-brand-600 text-white shadow-lg shadow-brand-900/20') 
+                                        ${isActive
+                                            ? (disasterMode ? 'bg-red-800 text-white shadow-lg' : 'bg-brand-600 text-white shadow-lg shadow-brand-900/20')
                                             : 'hover:bg-white/5 hover:text-white'
                                         }`}
                                 >
@@ -72,11 +72,11 @@ export const POLayout = () => {
                 </div>
 
                 <div className="mt-auto p-6">
-                   <button onClick={toggleDisaster}
+                    <button onClick={toggleDisaster}
                         className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-bold text-sm transition-all shadow-lg
-                        ${disasterMode 
-                            ? 'bg-white text-red-600 hover:bg-red-50' 
-                            : 'bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500 hover:text-white'}`}>
+                        ${disasterMode
+                                ? 'bg-white text-red-600 hover:bg-red-50'
+                                : 'bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500 hover:text-white'}`}>
                         <Zap size={16} />
                         {disasterMode ? 'DEACTIVATE EMERGENCY' : 'EMERGENCY MODE'}
                     </button>
@@ -145,30 +145,30 @@ const PODashboard = () => {
     return (
         <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <StatCard 
-                    title="Total Volunteers" 
-                    value={stats.volunteers_count} 
+                <StatCard
+                    title="Total Volunteers"
+                    value={stats.volunteers_count}
                     icon={<Users className="text-brand-600" size={24} />}
                     trend="+12% this month"
                     color="bg-brand-50"
                 />
-                <StatCard 
-                    title="Hours Served" 
-                    value={stats.total_hours} 
+                <StatCard
+                    title="Hours Served"
+                    value={stats.total_hours}
                     icon={<Clock className="text-emerald-600" size={24} />}
                     trend="+5% vs target"
                     color="bg-emerald-50"
                 />
-                <StatCard 
-                    title="Active Tasks" 
-                    value={stats.activities_created} 
+                <StatCard
+                    title="Active Tasks"
+                    value={stats.activities_created}
                     icon={<MapPin className="text-violet-600" size={24} />}
                     trend="3 urgent"
                     color="bg-violet-50"
                 />
-                <StatCard 
-                    title="Completions" 
-                    value={stats.activities_verified} 
+                <StatCard
+                    title="Completions"
+                    value={stats.activities_verified}
                     icon={<Check className="text-orange-600" size={24} />}
                     trend="98% approval rate"
                     color="bg-orange-50"
@@ -185,11 +185,11 @@ const PODashboard = () => {
                         <Bar data={chartData} options={chartOptions} />
                     </div>
                 </div>
-                
+
                 <div className="card bg-gradient-to-br from-brand-600 to-brand-800 text-white border-none">
                     <h3 className="font-bold text-lg mb-2 opacity-90">Quick Actions</h3>
                     <p className="text-brand-100 text-sm mb-6">Manage your unit efficiently.</p>
-                    
+
                     <div className="space-y-3">
                         <button className="w-full bg-white/10 hover:bg-white/20 text-left px-4 py-3 rounded-xl transition flex items-center gap-3">
                             <Plus size={18} /> New Activity
@@ -257,7 +257,7 @@ const ActivityCreator = ({ onSuccess, prefill }) => {
                             <label className="label-text">Activity Title</label>
                             <input className="input-field" placeholder="e.g. Campus Clean-up Drive" required value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} />
                         </div>
-                        
+
                         <div>
                             <label className="label-text">Type</label>
                             <div className="relative">
@@ -283,7 +283,7 @@ const ActivityCreator = ({ onSuccess, prefill }) => {
                             <label className="label-text">Volunteers Needed</label>
                             <input type="number" className="input-field" required value={form.required_count} onChange={e => setForm({ ...form, required_count: e.target.value })} />
                         </div>
-                        
+
                         <div>
                             <label className="label-text">Estimated Hours</label>
                             <input type="number" className="input-field" required value={form.estimated_hours} onChange={e => setForm({ ...form, estimated_hours: e.target.value })} />
@@ -296,8 +296,8 @@ const ActivityCreator = ({ onSuccess, prefill }) => {
                             {SKILLS.map(s => (
                                 <label key={s} className={`
                                     flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer transition-all border
-                                    ${form.skills_needed.includes(s) 
-                                        ? 'bg-brand-50 border-brand-200 text-brand-700 ring-1 ring-brand-500' 
+                                    ${form.skills_needed.includes(s)
+                                        ? 'bg-brand-50 border-brand-200 text-brand-700 ring-1 ring-brand-500'
                                         : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'}
                                 `}>
                                     <input type="checkbox" className="hidden"
@@ -349,7 +349,7 @@ const AssignmentManager = () => {
     };
 
     const getStatusColor = (status) => {
-        switch(status) {
+        switch (status) {
             case 'CREATED': return 'bg-slate-100 text-slate-700 border-slate-200';
             case 'ASSIGNED': return 'bg-blue-50 text-blue-700 border-blue-200';
             case 'PROOF_SUBMITTED': return 'bg-yellow-50 text-yellow-700 border-yellow-200';
@@ -375,7 +375,7 @@ const AssignmentManager = () => {
                                 URGENT
                             </div>
                         )}
-                        
+
                         <div className="flex flex-col md:flex-row gap-6">
                             <div className="flex-1">
                                 <div className="flex items-start justify-between mb-2">
@@ -386,7 +386,7 @@ const AssignmentManager = () => {
                                         <h3 className="font-bold text-lg text-slate-900 group-hover:text-brand-600 transition-colors">{act.title}</h3>
                                     </div>
                                 </div>
-                                
+
                                 <div className="grid grid-cols-2 gap-4 text-sm text-slate-500 mt-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
                                     <div className="flex items-center gap-2">
                                         <Users size={16} className="text-slate-400" />
@@ -437,7 +437,7 @@ const AssignmentManager = () => {
                                             <X size={16} />
                                         </button>
                                     </div>
-                                    
+
                                     <div className="flex-1 overflow-y-auto space-y-3 custom-scrollbar pr-1">
                                         {matches.map(({ volunteer, score, reason }) => (
                                             <div key={volunteer.id} className="bg-white p-3 rounded-lg shadow-sm border border-brand-100 hover:shadow-md transition-shadow">
@@ -485,14 +485,14 @@ const AIPlanner = ({ onRequestCreate }) => {
                     <h2 className="text-2xl font-bold text-slate-900 mb-2">Community Issue Planner</h2>
                     <p className="text-slate-500">Describe a community issue (e.g., "garbage pile near school") and our AI will structure a complete response plan for your unit.</p>
                 </div>
-                
+
                 <textarea
                     className="input-field h-40 mb-4 resize-none text-lg"
                     placeholder="Describe the issue here..."
                     value={desc}
                     onChange={e => setDesc(e.target.value)}
                 />
-                
+
                 <button onClick={handlePlan} disabled={!desc} className="btn-primary w-full flex items-center justify-center gap-2 py-3 text-lg">
                     <Brain size={20} /> Analyze & Plan Strategy
                 </button>
@@ -501,19 +501,19 @@ const AIPlanner = ({ onRequestCreate }) => {
             {plan ? (
                 <div className="bg-white p-8 rounded-2xl border border-indigo-100 shadow-xl shadow-indigo-500/10 animate-fade-in relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
-                    
+
                     <h3 className="font-bold text-xl text-slate-900 mb-6 flex items-center gap-2">
                         <CheckCircle size={24} className="text-green-500" />
                         Suggested Operation Plan
                     </h3>
-                    
+
                     <div className="space-y-4 mb-8">
                         <PlanItem label="Activity Type" value={plan.type} />
                         <PlanItem label="Estimated Duration" value={`${plan.est_hours} Hours`} />
                         <PlanItem label="Team Size" value={`${plan.count} Volunteers`} />
                         <PlanItem label="Required Skills" value={plan.skills.join(', ')} />
                     </div>
-                    
+
                     <div className="bg-indigo-50 p-4 rounded-xl mb-6">
                         <p className="text-xs text-indigo-700 font-medium">* This plan is AI-generated based on historic issue data patterns.</p>
                     </div>

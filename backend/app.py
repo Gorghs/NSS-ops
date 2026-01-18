@@ -6,7 +6,7 @@ import datetime
 app = Flask(__name__)
 CORS(app)
 
-# --- IN-MEMORY DATABASE (Resets on restart) ---
+# --- DATABASE ---
 class InMemoryDB:
     def __init__(self):
         self.reset()
@@ -57,11 +57,6 @@ db = InMemoryDB()
 @app.route('/api/status', methods=['GET'])
 def status():
     return jsonify({"status": "active", "disaster_mode": db.disaster_mode})
-
-@app.route('/api/reset', methods=['POST'])
-def reset_system():
-    db.reset()
-    return jsonify({"message": "System fully reset"})
 
 # --- MODULE 2: VOLUNTEERS ---
 @app.route('/api/volunteers', methods=['GET', 'POST'])

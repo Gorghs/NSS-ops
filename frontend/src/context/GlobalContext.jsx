@@ -29,7 +29,7 @@ export const GlobalProvider = ({ children }) => {
     useEffect(() => {
         // Initial load
         refreshData();
-        // Poll every 5s for live updates (prototype style)
+        // Poll every 5s for live updates
         const interval = setInterval(refreshData, 5000);
         return () => clearInterval(interval);
     }, []);
