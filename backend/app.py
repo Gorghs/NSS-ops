@@ -25,9 +25,9 @@ class InMemoryDB:
     def seed(self):
         # Mock Volunteers
         self.volunteers = [
-            {"id": 1, "name": "Arjun Kumar", "skills": ["medical", "management"], "location": "North Campus", "available": True, "joined_at": datetime.datetime.now().isoformat()},
-            {"id": 2, "name": "Sneha Reddy", "skills": ["teaching", "art"], "location": "South Campus", "available": True, "joined_at": datetime.datetime.now().isoformat()},
-            {"id": 3, "name": "Raj Mulligan", "skills": ["physical_labor", "logistics"], "location": "Main Block", "available": True, "joined_at": datetime.datetime.now().isoformat()}
+            {"id": 1, "name": "Arjun Kumar", "email": "arjun@nss.org", "skills": ["medical", "management"], "location": "North Campus", "available": True, "joined_at": datetime.datetime.now().isoformat()},
+            {"id": 2, "name": "Sneha Reddy", "email": "sneha@nss.org", "skills": ["teaching", "art"], "location": "South Campus", "available": True, "joined_at": datetime.datetime.now().isoformat()},
+            {"id": 3, "name": "Raj Mulligan", "email": "raj@nss.org", "skills": ["physical_labor", "logistics"], "location": "Main Block", "available": True, "joined_at": datetime.datetime.now().isoformat()}
         ]
         self.v_id_counter = 4
         for v in self.volunteers:
@@ -66,6 +66,7 @@ def manage_volunteers():
         new_vol = {
             "id": db.v_id_counter,
             "name": data.get("name"),
+            "email": data.get("email"),
             "skills": data.get("skills", []),
             "location": data.get("location"),
             "available": data.get("available", True),
@@ -212,6 +213,27 @@ def submit_complaint():
     data = request.json
     db.complaints.append(data.get("text"))
     return jsonify({"success": True})
+
+# --- MODULE 12: AUTH ---
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.json
+    email = data.get("email")
+    role = data.get("role")
+    
+    if role == 'po':
+        # Mock PO login - always success for demo
+        return jsonify({"success": True, "role": "po"})
+        
+    if role == 'volunteer':
+        # Find volunteer by email
+        vol = next((v for v in db.volunteers if v.get("email") == email), None)
+        if vol:
+            return jsonify({"success": True, "role": "volunteer", "volunteer": vol})
+        else:
+            return jsonify({"success": False, "error": "User not found"}), 404
+
+    return jsonify({"error": "Invalid role"}), 400
 
 import os
 

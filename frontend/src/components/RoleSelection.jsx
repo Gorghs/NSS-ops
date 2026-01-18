@@ -7,23 +7,37 @@ import {
 } from 'lucide-react';
 
 export default function RoleSelection() {
-    const { setRole } = useGlobal();
+    const { setRole, setVolunteerData } = useGlobal();
     const navigate = useNavigate();
     const location = useLocation();
-
-    // Parse query param to determine view state? Or just use local state for this UI flow?
-    // Using local state for the login form toggle vs selection is fine, but successful login should Navigate.
     const [view, setView] = useState('selection'); // 'selection' | 'login-po' | 'login-volunteer'
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-    const handleLogin = (role) => {
+    const handleLogin = async (role, email) => {
         setIsLoading(true);
-        // Simulate network delay for realism
-        setTimeout(() => {
-            setRole(role); // This updates global state, App.jsx redirects automatically
-            // But we can also explicit navigate:
-            // navigate(role === 'volunteer' ? '/volunteer' : '/po'); // Redundant due to App.jsx logic but safe
-        }, 800);
+        setError(null);
+
+        try {
+            // Import api here or at top level if not circular
+            const { api } = await import('../api');
+
+            const res = await api.login(email, role);
+
+            if (res.success) {
+                if (role === 'volunteer') {
+                    setVolunteerData(res.volunteer); // Set existing data!
+                }
+                setRole(role);
+            } else {
+                setError(res.error || "Login failed");
+            }
+        } catch (e) {
+            console.error(e);
+            setError("Connection error");
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -114,15 +128,17 @@ export default function RoleSelection() {
                                     </p>
                                 </div>
 
-                                <form className="space-y-5" onSubmit={(e) => {
+                                <form className="space-y-5" onSubmit={async (e) => {
                                     e.preventDefault();
-                                    handleLogin(view === 'login-volunteer' ? 'volunteer' : 'po');
+                                    const email = e.target.email.value;
+                                    await handleLogin(view === 'login-volunteer' ? 'volunteer' : 'po', email);
                                 }}>
                                     <div className="space-y-1.5">
                                         <label className="text-sm font-semibold text-slate-700 ml-1">Email Address</label>
                                         <div className="relative">
                                             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                                             <input
+                                                name="email"
                                                 type="email"
                                                 className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border-transparent focus:bg-white focus:border-brand-300 focus:ring-4 focus:ring-brand-500/10 rounded-xl transition-all font-medium outline-none placeholder:text-slate-400 text-slate-900"
                                                 placeholder="name@example.com"
@@ -147,6 +163,12 @@ export default function RoleSelection() {
                                         </div>
                                     </div>
 
+                                    {error && (
+                                        <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg font-medium">
+                                            {error}
+                                        </div>
+                                    )}
+
                                     <button
                                         type="submit"
                                         disabled={isLoading}
@@ -165,7 +187,7 @@ export default function RoleSelection() {
 
                                 <div className="mt-8 text-center">
                                     <p className="text-sm text-slate-400 font-medium">
-                                        New here? <button className="text-slate-700 hover:text-brand-600 underline decoration-2 underline-offset-4">Create an account</button>
+                                        New here? <button onClick={() => setRole('volunteer')} className="text-slate-700 hover:text-brand-600 underline decoration-2 underline-offset-4">Create an account</button>
                                     </p>
                                 </div>
                             </div>

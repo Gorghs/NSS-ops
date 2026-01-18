@@ -5,6 +5,12 @@ export const api = {
 
     getStatus: () => fetch(`${API_URL}/status`).then(r => r.json()),
 
+    login: (email, role) => fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, role })
+    }).then(r => r.json()),
+
     // Volunteers
     createVolunteer: (data) => fetch(`${API_URL}/volunteers`, {
         method: "POST",
